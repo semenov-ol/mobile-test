@@ -3,6 +3,11 @@ export type RootStackParamList = {
   NotFound: undefined;
 };
 
+export type ModalStackParamList = {
+  Main: undefined;
+  Modal: undefined;
+}
+
 export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
