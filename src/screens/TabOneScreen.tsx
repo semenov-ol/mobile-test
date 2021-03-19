@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, TextInput, Button, SafeAreaView } from 'react-native';
 import { inject, observer } from 'mobx-react';
 
-function TabOneScreen(props: { store: { text: string; updateText: any; data: any; searchImages: () => {} } }) {
+function TabOneScreen(props: { store: { text: string; updateText: () => {} } }) {
   const { text, updateText } = props.store;
 
   return (
