@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextInput, Button, SafeAreaView } from 'react-native';
+import { inject, observer } from 'mobx-react';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+function TabOneScreen(props: { store: { text: string; updateText: any; data: any; searchImages: () => {} } }) {
+  const { text, updateText } = props.store;
 
-export default function TabOneScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-    </View>
+    <SafeAreaView>
+      <TextInput style={styles.input} value={text} onChangeText={updateText} />
+      <Button title="Search" onPress={() => {}} />
+    </SafeAreaView>
   );
 }
 
@@ -29,4 +28,13 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  input: {
+    height: 50,
+    width: '80%',
+    margin: 12,
+    borderWidth: 1,
+    alignSelf: 'center',
+  },
 });
+
+export default inject('store')(observer(TabOneScreen));
