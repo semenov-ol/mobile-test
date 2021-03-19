@@ -17,10 +17,8 @@ function TabOneScreen(props: { store: { text: string; updateText: () => {} } }) 
     }
   `;
 
-  const { loading, data, error } = useQuery(EXCHANGE_RATES);
+ // const { loading, data, error } = useQuery(EXCHANGE_RATES);
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error :(</Text>;
 
   function randomInteger(min: number, max: number) {
     let rand = min + Math.random() * (max + 1 - min);
@@ -32,7 +30,9 @@ function TabOneScreen(props: { store: { text: string; updateText: () => {} } }) 
       <TextInput style={styles.input} value={text} onChangeText={updateText} />
       <Button title="Search" onPress={() => {}} />
 
+{/*
       <Text>Random currency: {data.rates[randomInteger(1, 100)].currency}</Text>
+*/}
     </SafeAreaView>
   );
 }
