@@ -1,16 +1,16 @@
 import { observable, action, makeObservable } from 'mobx';
 
 export class Store {
-  text = '';
+  data = {};
 
-  updateText = (text: string) => {
-    this.text = text;
+  updateData = (data: {rockets: []}) => {
+    this.data = data
   };
 
   constructor() {
     makeObservable(this, {
-      text: observable,
-      updateText: action,
+      data: observable,
+      updateData: action,
     });
   }
 }

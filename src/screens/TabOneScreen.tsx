@@ -1,45 +1,66 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, Button, SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { useQuery, gql } from '@apollo/client';
 
-import { Text } from '../components/Themed';
+import { Text, View } from '../components/Themed';
+import { toJS } from 'mobx';
 
-function TabOneScreen(props: { store: { text: string; updateText: () => {} } }) {
-  const { text, updateText } = props.store;
+interface Rockets {
+  name: string;
+  __typename: string;
+  boosters: number;
+  description: string;
+  mass: {
+    kg: number;
+  };
+}
+
+function TabOneScreen(props: { store: { data: { rockets: Rockets[] }; updateData: (data: any) => {} } }) {
+  const { data: storeData, updateData } = props.store;
+  const [response, setResponse] = React.useState<{ rockets: Rockets[] }>();
 
   const EXCHANGE_RATES = gql`
-    query GetExchangeRates {
-      rates(currency: "USD") {
-        currency
-        rate
+    query GetRockets {
+      rockets(limit: 10) {
+        boosters
+        name
+        mass {
+          kg
+        }
+        description
       }
     }
   `;
 
- // const { loading, data, error } = useQuery(EXCHANGE_RATES);
+  const { data } = useQuery(EXCHANGE_RATES);
 
-
-  function randomInteger(min: number, max: number) {
-    let rand = min + Math.random() * (max + 1 - min);
-    return Math.floor(rand);
-  }
+  React.useEffect(() => {
+    updateData(data);
+    setResponse(toJS(storeData));
+  }, [data]);
 
   return (
-    <SafeAreaView>
-      <TextInput style={styles.input} value={text} onChangeText={updateText} />
-      <Button title="Search" onPress={() => {}} />
-
-{/*
-      <Text>Random currency: {data.rates[randomInteger(1, 100)].currency}</Text>
-*/}
-    </SafeAreaView>
+    <View style={styles.container}>
+      <View style={{ width: '90%' }}>
+        <Text style={{ marginVertical: 20, fontWeight: 'bold' }}>SpaceX Rockets:</Text>
+        {response?.rockets?.map((item) => (
+          <View key={item.name}>
+            <Text>Rocket Name: {item.name}</Text>
+            <Text>mass: {item.mass.kg}</Text>
+            <Text>desc: {item.description}</Text>
+            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+          </View>
+        ))}
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
