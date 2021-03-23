@@ -6,17 +6,17 @@ import { useQuery, gql } from '@apollo/client';
 import { Text, View } from '../components/Themed';
 import { toJS } from 'mobx';
 
-interface Rockets {
-  name: string;
-  __typename: string;
-  boosters: number;
-  description: string;
-  mass: {
+export interface Rockets {
+  name?: string;
+  __typename?: string;
+  boosters?: number;
+  description?: string;
+  mass?: {
     kg: number;
   };
 }
 
-function TabOneScreen(props: { store: { data: { rockets: Rockets[] }; updateData: (data: any) => {} } }) {
+function TabOneScreen(props: { store: { data?: { rockets: Rockets[] } | undefined; updateData: (data: any) => {} } }) {
   const { data: storeData, updateData } = props.store;
   const [response, setResponse] = React.useState<{ rockets: Rockets[] }>();
 
@@ -47,7 +47,7 @@ function TabOneScreen(props: { store: { data: { rockets: Rockets[] }; updateData
         {response?.rockets?.map((item) => (
           <View key={item.name}>
             <Text>Rocket Name: {item.name}</Text>
-            <Text>mass: {item.mass.kg}</Text>
+            <Text>mass: {item.mass?.kg}</Text>
             <Text>desc: {item.description}</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
           </View>
