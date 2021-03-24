@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React, { FC, useEffect } from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { useQuery, gql } from '@apollo/client';
 
 import { Text, View } from '../components/Themed';
-import { toJS } from 'mobx';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FC } from 'react';
+import { store } from '../../App';
+import { WishListItem } from './WishListItem';
 
 export interface Rockets {
   name?: string;
@@ -19,15 +19,11 @@ export interface Rockets {
 }
 
 interface TabOneScreenProps {
-  navigation: StackNavigationProp<any>;
-  store: {
-    data?: { rockets: Rockets[] };
-    updateData: (data: Rockets[]) => {};
-  };
+  navigation?: StackNavigationProp<any>;
 }
 
-const TabOneScreen: FC<TabOneScreenProps> = ({ store, navigation }) => {
-  const { data: storeData, updateData } = store;
+const TabOneScreen: FC<TabOneScreenProps> = ({ navigation }) => {
+  console.log(store)
 
   const EXCHANGE_RATES = gql`
     query GetRockets {
@@ -44,21 +40,29 @@ const TabOneScreen: FC<TabOneScreenProps> = ({ store, navigation }) => {
 
   const { data } = useQuery(EXCHANGE_RATES);
 
-  React.useEffect(() => {
-    updateData(data);
+  useEffect(() => {
+    store.updateData(data);
   }, [data]);
 
   return (
     <ScrollView style={styles.container}>
       <View style={{ width: '90%', alignSelf: 'center' }}>
         <Text style={{ marginVertical: 20, fontWeight: 'bold' }}>SpaceX Rockets:</Text>
-        {toJS(storeData)?.rockets?.map((item: Rockets) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Modal', { data: item })} key={item.name}>
-            <Text>Rocket Name: {item.name}</Text>
-            <Text>mass: {item.mass?.kg}</Text>
-            <Text>desc: {item.description}</Text>
+        {store.data?.rockets?.map((item: Rockets) => (
+          <View key={item.name}>
+            <TouchableOpacity onPress={() => navigation?.navigate('Modal', { data: item })}>
+              <Text>Rocket Name: {item.name}</Text>
+              <Text>mass: {item.mass?.kg}</Text>
+              <Text>desc: {item.description}</Text>
+            </TouchableOpacity>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-          </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+      <View>
+        {store.wishList.length > 0 && <Text>Here your wishList</Text>}
+        {store.wishList.map((item) => (
+          <WishListItem key={item.key} item={item} />
         ))}
       </View>
     </ScrollView>
@@ -88,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default inject('store')(observer(TabOneScreen));
+export default observer(TabOneScreen);

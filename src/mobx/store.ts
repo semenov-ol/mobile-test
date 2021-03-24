@@ -1,17 +1,24 @@
-import { observable, action, makeObservable } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { Rockets } from '../screens/TabOneScreen';
 
 export class Store {
-  @observable data: { rockets: Rockets[]; } | undefined;
+  data?: { rockets: Rockets[] };
+  wishList: { value: string; key: number }[] = [];
 
-  @action updateData = (data: { rockets: Rockets[] } | undefined) => {
+  updateData = (data?: { rockets: Rockets[] }) => {
     this.data = data;
   };
 
- /* constructor() {
-    makeObservable(this, {
-      data: observable,
-      updateData: action,
-    });
-  }*/
+  updateWishList = (item: {value: string, key: number}) => {
+    this.wishList = [...this.wishList, item];
+  };
+
+  deleteFromWishList = (key: number) => {
+    const removedItemIndex = this.wishList.findIndex(item => item.key === key)
+    this.wishList = [...this.wishList.slice(0, removedItemIndex), ...this.wishList.slice(removedItemIndex + 1)]
+  }
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 }

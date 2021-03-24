@@ -3,6 +3,7 @@ import React from 'react';
 import { Rockets } from './TabOneScreen';
 import TabOneScreen from './TabOneScreen';
 import { Store } from '../mobx/store';
+import TabTwoScreen from './TabTwoScreen';
 
 describe('TabOneScreen Rendering', () => {
   const props: { store: { data?: { rockets: Rockets[] } | undefined; updateData: (data: any) => {} } } = {
@@ -34,19 +35,34 @@ describe('TabOneScreen Rendering', () => {
       },
     },
   };
+
+  const store = new Store();
+
   describe('Check if match to snapshot', () => {
     it('should match', () => {
-      const comp = shallow(<TabOneScreen {...props} />);
+      const comp = shallow(<TabOneScreen />);
       expect(comp).toMatchSnapshot();
+    });
+  });
+
+  describe('Check if match snapshot for 2 component', () => {
+    it('should match', () => {
+      const component = shallow(<TabTwoScreen />);
+      expect(component).toMatchSnapshot();
     });
   });
 
   describe('Test store update', () => {
     it('store should match with given data', () => {
-      const store = new Store();
-
       store.updateData(props.store.data);
       expect(store.data?.rockets.length).toBe(props.store.data?.rockets?.length);
+    });
+  });
+
+  describe('Test update wish list', () => {
+    it('should match with given data', () => {
+      store.updateWishList({ value: 'test', key: 20 });
+      expect(store.wishList.length).toBe(1);
     });
   });
 });

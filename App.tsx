@@ -9,8 +9,9 @@ import useColorScheme from './src/hooks/useColorScheme';
 import Navigation from './src/navigation';
 import { Store } from './src/mobx/store';
 
+export const store = new Store();
+
 export default function App() {
-  const store = new Store();
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -23,14 +24,14 @@ export default function App() {
     return null;
   } else {
     return (
-      <Provider store={store}>
-        <ApolloProvider client={client}>
-        <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
-        </ApolloProvider>
-      </Provider>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <SafeAreaProvider>
+            <Navigation colorScheme={colorScheme} />
+            <StatusBar />
+          </SafeAreaProvider>
+        </Provider>
+      </ApolloProvider>
     );
   }
 }
