@@ -1,0 +1,21 @@
+{
+  "preset": "react-native",
+  "collectCoverage": true,
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "transform": {
+    "\\.ts$": "ts-jest"
+  },
+  "setupFiles": [
+    "<rootDir>/jest/setup.ts"
+  ],
+  "transformIgnorePatterns": [
+    "node_modules/(?!(jest-)?react-native)"
+  ],
+  "coveragePathIgnorePatterns": [
+    "/node_modules/",
+    "/jest"
+  ]
+}

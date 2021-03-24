@@ -1,16 +1,17 @@
 import { observable, action, makeObservable } from 'mobx';
+import { Rockets } from '../screens/TabOneScreen';
 
 export class Store {
-  data = {};
+  @observable data: { rockets: Rockets[]; } | undefined;
 
-  updateData = (data: {rockets: []}) => {
-    this.data = data
+  @action updateData = (data: { rockets: Rockets[] } | undefined) => {
+    this.data = data;
   };
 
-  constructor() {
+ /* constructor() {
     makeObservable(this, {
       data: observable,
       updateData: action,
     });
-  }
+  }*/
 }

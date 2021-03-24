@@ -9,11 +9,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { FC } from 'react';
 
 export interface Rockets {
-  name: string;
-  __typename: string;
-  boosters: number;
-  description: string;
-  mass: {
+  name?: string;
+  __typename?: string;
+  boosters?: number;
+  description?: string;
+  mass?: {
     kg: number;
   };
 }
@@ -21,7 +21,7 @@ export interface Rockets {
 interface TabOneScreenProps {
   navigation: StackNavigationProp<any>;
   store: {
-    data: { rockets: Rockets[] };
+    data?: { rockets: Rockets[] };
     updateData: (data: Rockets[]) => {};
   };
 }
@@ -55,7 +55,7 @@ const TabOneScreen: FC<TabOneScreenProps> = ({ store, navigation }) => {
         {toJS(storeData)?.rockets?.map((item: Rockets) => (
           <TouchableOpacity onPress={() => navigation.navigate('Modal', { data: item })} key={item.name}>
             <Text>Rocket Name: {item.name}</Text>
-            <Text>mass: {item.mass.kg}</Text>
+            <Text>mass: {item.mass?.kg}</Text>
             <Text>desc: {item.description}</Text>
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
           </TouchableOpacity>
