@@ -1,5 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import { MockedProvider } from '@apollo/react-testing';
+
 import { Rockets } from './TabOneScreen';
 import TabOneScreen from './TabOneScreen';
 import { Store } from '../mobx/store';
@@ -40,14 +42,22 @@ describe('TabOneScreen Rendering', () => {
 
   describe('Check if match to snapshot', () => {
     it('should match', () => {
-      const comp = shallow(<TabOneScreen />);
+      const comp = shallow(
+        <MockedProvider>
+          <TabOneScreen />
+        </MockedProvider>
+      );
       expect(comp).toMatchSnapshot();
     });
   });
 
   describe('Check if match snapshot for 2 component', () => {
     it('should match', () => {
-      const component = shallow(<TabTwoScreen />);
+      const component = shallow(
+        <MockedProvider>
+          <TabTwoScreen />
+        </MockedProvider>
+      );
       expect(component).toMatchSnapshot();
     });
   });
