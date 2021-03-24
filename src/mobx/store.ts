@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { Rockets } from '../screens/TabOneScreen';
 
 export class Store {
-  data?: { rockets: Rockets[] };
+  data?: { rockets: Rockets[] } = {rockets: []};
   wishList: { value: string; key: number }[] = [];
 
   updateData = (data?: { rockets: Rockets[] }) => {

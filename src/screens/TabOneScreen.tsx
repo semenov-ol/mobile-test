@@ -23,7 +23,7 @@ interface TabOneScreenProps {
 }
 
 const TabOneScreen: FC<TabOneScreenProps> = ({ navigation }) => {
-  console.log(store)
+  const { data: storeData, updateData } = store;
 
   const EXCHANGE_RATES = gql`
     query GetRockets {
@@ -41,14 +41,14 @@ const TabOneScreen: FC<TabOneScreenProps> = ({ navigation }) => {
   const { data } = useQuery(EXCHANGE_RATES);
 
   useEffect(() => {
-    store.updateData(data);
+    updateData(data);
   }, [data]);
 
   return (
     <ScrollView style={styles.container}>
       <View style={{ width: '90%', alignSelf: 'center' }}>
         <Text style={{ marginVertical: 20, fontWeight: 'bold' }}>SpaceX Rockets:</Text>
-        {store.data?.rockets?.map((item: Rockets) => (
+        {storeData?.rockets?.map((item: Rockets) => (
           <View key={item.name}>
             <TouchableOpacity onPress={() => navigation?.navigate('Modal', { data: item })}>
               <Text>Rocket Name: {item.name}</Text>
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 20,
