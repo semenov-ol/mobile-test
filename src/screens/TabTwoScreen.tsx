@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { StyleSheet, TextInput, SafeAreaView, Button } from 'react-native';
 import { observer } from 'mobx-react';
 

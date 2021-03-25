@@ -7,6 +7,7 @@ import { Text, View } from '../components/Themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { store } from '../../App';
 import { WishListItem } from './WishListItem';
+import { FadeIn } from '../animations/fadeIn';
 
 export interface Rockets {
   name?: string;
@@ -45,27 +46,29 @@ const TabOneScreen: FC<TabOneScreenProps> = ({ navigation }) => {
   }, [data]);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={{ width: '90%', alignSelf: 'center' }}>
-        <Text style={{ marginVertical: 20, fontWeight: 'bold' }}>SpaceX Rockets:</Text>
-        {storeData?.rockets?.map((item: Rockets) => (
-          <View key={item.name}>
-            <TouchableOpacity onPress={() => navigation?.navigate('Modal', { data: item })}>
-              <Text>Rocket Name: {item.name}</Text>
-              <Text>mass: {item.mass?.kg}</Text>
-              <Text>desc: {item.description}</Text>
-            </TouchableOpacity>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-          </View>
-        ))}
-      </View>
-      <View>
-        {store.wishList.length > 0 && <Text>Here your wishList</Text>}
-        {store.wishList.map((item) => (
-          <WishListItem key={item.key} item={item} />
-        ))}
-      </View>
-    </ScrollView>
+    <FadeIn>
+      <ScrollView style={styles.container}>
+        <View style={{ width: '90%', alignSelf: 'center' }}>
+          <Text style={{ marginVertical: 20, fontWeight: 'bold' }}>SpaceX Rockets:</Text>
+          {storeData?.rockets?.map((item: Rockets) => (
+            <View key={item.name}>
+              <TouchableOpacity onPress={() => navigation?.navigate('Modal', { data: item })}>
+                <Text>Rocket Name: {item.name}</Text>
+                <Text>mass: {item.mass?.kg}</Text>
+                <Text>desc: {item.description}</Text>
+              </TouchableOpacity>
+              <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+            </View>
+          ))}
+        </View>
+        <View>
+          {store.wishList.length > 0 && <Text>Here your wishList</Text>}
+          {store.wishList.map((item) => (
+            <WishListItem key={item.key} item={item} />
+          ))}
+        </View>
+      </ScrollView>
+    </FadeIn>
   );
 };
 
